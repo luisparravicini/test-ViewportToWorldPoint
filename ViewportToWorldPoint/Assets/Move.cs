@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class Move : MonoBehaviour
 {
@@ -6,6 +7,8 @@ public class Move : MonoBehaviour
 		public GUIText posLabel;
 		public GUIText awakeLabel;
 		public GUIText startLabel;
+		public bool frameDelay = true;
+		public bool arbitraryDelay = false;
 
 		void Start ()
 		{
@@ -14,6 +17,22 @@ public class Move : MonoBehaviour
 
 		void Awake ()
 		{
+				StartCoroutine(CoDelayedAwake());
+		}
+
+		void DelayedAwake()
+		{
+				posLabel.text = "pos: " + position;
+				ViewportPos ("awake", awakeLabel);
+		}
+
+		IEnumerator CoDelayedAwake()
+		{
+				if (frameDelay)
+						yield return null;	 // One frame delay
+				else if (arbitraryDelay)
+						yield return new WaitForSeconds(0.25f); // Arbitrary delay
+
 				posLabel.text = "pos: " + position;
 				ViewportPos ("awake", awakeLabel);
 		}
